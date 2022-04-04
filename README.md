@@ -7,6 +7,18 @@ A monorepo of GitHub actions used for mobile releases.
 * [eas-build](./eas-build)
   * Assists in building and submitting your app using [EAS](https://docs.expo.dev/eas/)
 
+## Release Process
+
+At a very basic level, the release process is as follows:
+
+```mermaid
+flowchart TB
+  RS[release stage] & VFT[version change type] & P[platform] & B[branch] -.-> WD[manual start]
+  WD --> COB[check out specified branch]
+  COB --> UV[update versions]
+  UV --> BA[build app]
+```
+
 ## Full Workflow Examples
 
 * [Using GitHub tagging](./examples/release-github.yml)
