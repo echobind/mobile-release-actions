@@ -18,6 +18,6 @@ __You must [install EAS CLI](https://github.com/marketplace/actions/expo-github-
 
 | Name       | Type                       | Default      | Description                                          |
 | ---------- | -------------------------- | ------------ | ---------------------------------------------------- |
-| `platform` | `ios`, `android`, or `all` | `ios`        | Platform to build for.                               |
+| `platform` | `ios`, `android`, or `all` | `all`        | Platform to build for.                               |
 | `profile`  | `string`                   | `production` | Build and submit profile to use.                     |
 | `submit`   | `boolean`                  | `true`       | Whether to submit the build to app store/play store. |
