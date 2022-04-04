@@ -21,11 +21,6 @@ on:
           - minor
           - patch
           - none
-      createTag:
-        type: boolean
-        description: 'tag in github'
-        required: true
-        default: true
       platform:
         type: choice
         description: 'platform to build for'
@@ -55,7 +50,6 @@ jobs:
         uses: echobind/mobile-release-actions/tagging@v1
         with:
           github-tagging: true
-          create-tag: ${{ github.event.inputs.createTag }}
           branch: ${{ github.event.inputs.branch }}
           version-change-type: ${{ github.event.inputs.versionChangeType }}
           build-version: ${{ github.run_number }}
