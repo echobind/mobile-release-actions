@@ -20,5 +20,5 @@ export const writePackageJsonVersion = async (newVersion: string) => {
 
   json.version = newVersion;
 
-  await fs.writeFile(`${process.env.GITHUB_WORKSPACE}/package.json`, JSON.stringify(json));
+  await fs.writeFile(`${process.env.GITHUB_WORKSPACE}/package.json`, JSON.stringify(json, null, 2));
 };
