@@ -1,8 +1,13 @@
 import fs from 'fs/promises';
 
+const getPackageJsonPath = (rootDirectory?: string) =>
+  rootDirectory ? `${rootDirectory}/package.json` : 'package.json';
+
 /** Get version from package json */
-export const getPackageJsonVersion = () => {
-  const packageJson = require(`${process.env.GITHUB_WORKSPACE}/package.json`);
+export const getPackageJsonVersion = (rootDirectory?: string) => {
+  const packageJson = require(`${process.env.GITHUB_WORKSPACE}/${getPackageJsonPath(
+    rootDirectory
+  )}`);
 
   if (!packageJson.version) {
     throw new Error('No version specified in package.json');
@@ -12,13 +17,18 @@ export const getPackageJsonVersion = () => {
 };
 
 /** Write new version to package json */
-export const writePackageJsonVersion = async (newVersion: string) => {
-  const packageJson = require(`${process.env.GITHUB_WORKSPACE}/package.json`);
+export const writePackageJsonVersion = async (newVersion: string, rootDirectory?: string) => {
+  const packageJson = require(`${process.env.GITHUB_WORKSPACE}/${getPackageJsonPath(
+    rootDirectory
+  )}`);
   const json = {
     ...packageJson,
   };
 
   json.version = newVersion;
 
-  await fs.writeFile(`${process.env.GITHUB_WORKSPACE}/package.json`, JSON.stringify(json, null, 2));
+  await fs.writeFile(
+    `${process.env.GITHUB_WORKSPACE}/${getPackageJsonPath(rootDirectory)}`,
+    JSON.stringify(json, null, 2)
+  );
 };

@@ -22,9 +22,12 @@ inputs:
     required: true
     default: 'none'
   build-version:
-    description: Build version
+    description: 'Build version'
     required: true
     default: 1
+  root-directory:
+    description: 'The root directory of the app, if different than the root of the repo'
+    required: false
 outputs:
   tag:
     description: 'The tag that was created'

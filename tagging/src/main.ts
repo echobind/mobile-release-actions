@@ -15,6 +15,7 @@ const main = async (): Promise<void> => {
   const buildVersion = core.getInput('build-version') || '1';
   const githubTagging = core.getBooleanInput('github-tagging');
   const createTag = core.getBooleanInput('create-tag');
+  const rootDirectory = core.getInput('root-directory');
 
   await exec.exec('git', ['config', 'user.name', 'github-actions']);
   await exec.exec('git', ['config', 'user.email', 'github-actions@github.com']);
@@ -26,7 +27,7 @@ const main = async (): Promise<void> => {
     currentTag = await getMostRecentGithubTag(githubAuthToken);
     currentVersion = getVersionFromTag(currentTag);
   } else {
-    currentVersion = getPackageJsonVersion();
+    currentVersion = getPackageJsonVersion(rootDirectory);
   }
 
   const newTag = getNewTag({
@@ -49,7 +50,7 @@ const main = async (): Promise<void> => {
       });
     }
   } else {
-    await writePackageJsonVersion(getVersionFromTag(newTag));
+    await writePackageJsonVersion(getVersionFromTag(newTag), rootDirectory);
 
     await exec.exec('git', ['add', 'package.json']);
     await exec.exec('git', ['commit', '-m', `chore(release): ${newTag}`]);
