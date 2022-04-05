@@ -53,8 +53,8 @@ async function updateIOSVersions({
   buildVersion,
   rootDirectory,
 }: AppVersionAndBuildVersion) {
-  core.info(`-- Updating iOS App version to ${appVersion} --`);
-  core.info(`-- Updating iOS build version to ${buildVersion} --`);
+  core.info(`Updating iOS App version to ${appVersion}`);
+  core.info(`Updating iOS build version to ${buildVersion}`);
 
   const xcodeProjects = fs
     .readdirSync(getIosDir(rootDirectory))
@@ -140,8 +140,8 @@ async function updateAndroidVersions({
   buildVersion,
   rootDirectory,
 }: AppVersionAndBuildVersion) {
-  core.info(`-- Updating Android App version to ${appVersion} --`);
-  core.info(`-- Updating Android build version to ${buildVersion} --`);
+  core.info(`Updating Android App version to ${appVersion}`);
+  core.info(`Updating Android build version to ${buildVersion}`);
   let gradleFile: string | Buffer = await fs.promises.readFile(getBuildGradleDir(rootDirectory));
 
   // Note that buildVersion MUST be an integer, or Android builds will fail. See:
