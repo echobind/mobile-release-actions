@@ -1,3 +1,4 @@
+import * as core from '@actions/core';
 import path from 'path';
 import fs from 'fs';
 import { Xcode } from 'pbxproj-dom/xcode';
@@ -52,8 +53,8 @@ async function updateIOSVersions({
   buildVersion,
   rootDirectory,
 }: AppVersionAndBuildVersion) {
-  console.log(`-- Updating iOS App version to ${appVersion} --`);
-  console.log(`-- Updating iOS build version to ${buildVersion} --`);
+  core.info(`-- Updating iOS App version to ${appVersion} --`);
+  core.info(`-- Updating iOS build version to ${buildVersion} --`);
 
   const xcodeProjects = fs
     .readdirSync(getIosDir(rootDirectory))
@@ -139,8 +140,8 @@ async function updateAndroidVersions({
   buildVersion,
   rootDirectory,
 }: AppVersionAndBuildVersion) {
-  console.log(`-- Updating Android App version to ${appVersion} --`);
-  console.log(`-- Updating Android build version to ${buildVersion} --`);
+  core.info(`-- Updating Android App version to ${appVersion} --`);
+  core.info(`-- Updating Android build version to ${buildVersion} --`);
   let gradleFile: string | Buffer = await fs.promises.readFile(getBuildGradleDir(rootDirectory));
 
   // Note that buildVersion MUST be an integer, or Android builds will fail. See:

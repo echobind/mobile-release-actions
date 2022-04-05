@@ -43,6 +43,8 @@ const main = async (): Promise<void> => {
 
   if (githubTagging) {
     if (createTag) {
+      core.info(`Creating new tag ${newTag}`);
+
       await createGithubTag({
         githubAuthToken,
         branchToTag,
@@ -51,8 +53,12 @@ const main = async (): Promise<void> => {
       });
     }
   } else {
-    if (versionChangeType !== 'none') {
-      await writePackageJsonVersion(getVersionFromTag(newTag), rootDirectory);
+    const newVersion = getVersionFromTag(newTag);
+
+    if (newVersion !== currentVersion) {
+      core.info(`Updating package.json version to ${newVersion}`);
+
+      await writePackageJsonVersion(newVersion, rootDirectory);
 
       await exec.exec('git', [
         'add',
@@ -60,6 +66,8 @@ const main = async (): Promise<void> => {
       ]);
       await exec.exec('git', ['commit', '-m', `chore(release): ${newTag}`]);
       await exec.exec('git', ['push', '-f', 'origin', branchToTag]);
+    } else {
+      core.info('No version change detected');
     }
   }
 
