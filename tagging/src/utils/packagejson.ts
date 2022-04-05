@@ -1,10 +1,10 @@
 import fs from 'fs/promises';
 
-const getPackageJsonPath = (rootDirectory?: string) =>
+const getPackageJsonPath = (rootDirectory: string | undefined) =>
   rootDirectory ? `${rootDirectory}/package.json` : 'package.json';
 
 /** Get version from package json */
-export const getPackageJsonVersion = (rootDirectory?: string) => {
+export const getPackageJsonVersion = (rootDirectory: string | undefined) => {
   const packageJson = require(`${process.env.GITHUB_WORKSPACE}/${getPackageJsonPath(
     rootDirectory
   )}`);
@@ -17,7 +17,10 @@ export const getPackageJsonVersion = (rootDirectory?: string) => {
 };
 
 /** Write new version to package json */
-export const writePackageJsonVersion = async (newVersion: string, rootDirectory?: string) => {
+export const writePackageJsonVersion = async (
+  newVersion: string,
+  rootDirectory: string | undefined
+) => {
   const packageJson = require(`${process.env.GITHUB_WORKSPACE}/${getPackageJsonPath(
     rootDirectory
   )}`);

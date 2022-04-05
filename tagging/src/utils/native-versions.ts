@@ -4,44 +4,66 @@ import { Xcode } from 'pbxproj-dom/xcode';
 import plist from 'plist';
 import { uniq as unique, flattenDeep } from 'lodash';
 
-const IOS_DIR = path.join(process.env.GITHUB_WORKSPACE || '', 'ios');
-const BUILD_GRADLE_PATH = path.join(process.env.GITHUB_WORKSPACE || '', 'android/app/build.gradle');
+const getIosDir = (rootDirectory?: string) => {
+  const iosPath = rootDirectory ? `${rootDirectory}/ios` : 'ios';
+
+  return path.join(process.env.GITHUB_WORKSPACE || '', iosPath);
+};
+
+const getBuildGradleDir = (rootDirectory?: string) => {
+  const buildGradlePath = rootDirectory
+    ? `${rootDirectory}/android/app/build.gradle`
+    : 'android/app/build.gradle';
+
+  return path.join(process.env.GITHUB_WORKSPACE || '', buildGradlePath);
+};
 
 interface WriteBuildAndAppVersionProps {
   tag: string;
+  rootDirectory: string | undefined;
 }
 
 /**
  * Write iOS and Android Build/App versions
  */
-export const writeBuildAndAppVersions = async ({ tag }: WriteBuildAndAppVersionProps) => {
+export const writeBuildAndAppVersions = async ({
+  tag,
+  rootDirectory,
+}: WriteBuildAndAppVersionProps) => {
   const [appVersionWithV, stringBuildVersion] = tag.split('-');
   const appVersion = appVersionWithV.replace('v', '');
   const buildVersion = Number(stringBuildVersion);
 
-  await updateIOSVersions({ appVersion, buildVersion });
-  await updateAndroidVersions({ appVersion, buildVersion });
+  await updateIOSVersions({ appVersion, buildVersion, rootDirectory });
+  await updateAndroidVersions({ appVersion, buildVersion, rootDirectory });
 };
 
 interface AppVersionAndBuildVersion {
   appVersion: string;
   buildVersion: number;
+  rootDirectory: string | undefined;
 }
 
 /**
  * Updates ios projects/plists with new app versions
  */
-async function updateIOSVersions({ appVersion, buildVersion }: AppVersionAndBuildVersion) {
+async function updateIOSVersions({
+  appVersion,
+  buildVersion,
+  rootDirectory,
+}: AppVersionAndBuildVersion) {
   console.log(`-- Updating iOS App version to ${appVersion} --`);
   console.log(`-- Updating iOS build version to ${buildVersion} --`);
 
-  const xcodeProjects = fs.readdirSync(IOS_DIR).filter((file) => /\.xcodeproj$/i.test(file));
+  const xcodeProjects = fs
+    .readdirSync(getIosDir(rootDirectory))
+    .filter((file) => /\.xcodeproj$/i.test(file));
 
-  const projectFolder = path.join(IOS_DIR, xcodeProjects[0]);
+  const projectFolder = path.join(getIosDir(rootDirectory), xcodeProjects[0]);
   const xcode = Xcode.open(path.join(projectFolder, 'project.pbxproj'));
 
-  await updateXcodeProjects({ xcode, buildVersion, appVersion });
-  await updatePlists({ xcode, buildVersion, appVersion });
+  await updateXcodeProjects({ xcode, buildVersion, appVersion, rootDirectory });
+  await updatePlists({ xcode, buildVersion, appVersion, rootDirectory });
 }
 
 interface UpdateXcodeProjects extends AppVersionAndBuildVersion {
@@ -70,11 +92,16 @@ async function updateXcodeProjects({ xcode, buildVersion }: UpdateXcodeProjects)
 /**
  * Updates plists with a new app/build version
  */
-async function updatePlists({ xcode, appVersion, buildVersion }: UpdateXcodeProjects) {
+async function updatePlists({
+  xcode,
+  appVersion,
+  buildVersion,
+  rootDirectory,
+}: UpdateXcodeProjects) {
   const plistFileNames = getPlistFilenames(xcode);
 
   const plistsToSave = plistFileNames.map((filename: any) => {
-    const plistPath = path.join(IOS_DIR, filename);
+    const plistPath = path.join(getIosDir(rootDirectory), filename);
     const plistObject = plist.parse(fs.readFileSync(plistPath, 'utf8')) as any;
 
     plistObject.CFBundleShortVersionString = appVersion;
@@ -107,10 +134,14 @@ function getPlistFilenames(xcode: any) {
 /**
  * Updates plists with a new app/build version
  */
-async function updateAndroidVersions({ appVersion, buildVersion }: AppVersionAndBuildVersion) {
+async function updateAndroidVersions({
+  appVersion,
+  buildVersion,
+  rootDirectory,
+}: AppVersionAndBuildVersion) {
   console.log(`-- Updating Android App version to ${appVersion} --`);
   console.log(`-- Updating Android build version to ${buildVersion} --`);
-  let gradleFile: string | Buffer = await fs.promises.readFile(BUILD_GRADLE_PATH);
+  let gradleFile: string | Buffer = await fs.promises.readFile(getBuildGradleDir(rootDirectory));
 
   // Note that buildVersion MUST be an integer, or Android builds will fail. See:
   //  https://stackoverflow.com/a/64708656/344391
@@ -120,5 +151,5 @@ async function updateAndroidVersions({ appVersion, buildVersion }: AppVersionAnd
     .toString()
     .replace(/versionName (["'])(.*)["']/, `versionName $1${appVersion}$1`);
 
-  return fs.promises.writeFile(BUILD_GRADLE_PATH, gradleFile);
+  return fs.promises.writeFile(getBuildGradleDir(rootDirectory), gradleFile);
 }

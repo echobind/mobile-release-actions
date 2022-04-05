@@ -38,6 +38,7 @@ const main = async (): Promise<void> => {
 
   await writeBuildAndAppVersions({
     tag: newTag,
+    rootDirectory,
   });
 
   if (githubTagging) {
