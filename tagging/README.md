@@ -35,6 +35,7 @@ flowchart TB
 | `branch`              | `string`                             | `main`         | Branch to create the tag off of.                                                                                                                              |
 | `version-change-type` | `major`, `minor`, `patch`, or `none` | `none`         | Type of version change to make                                                                                                                                |
 | `build-version`       | `string`                             | `1`            | Build version (see [terminology](#terminology)). A good value for this is `github.run_number`.                                                                |
+| `root-directory`      | `string`                             | N/A            | Root directory of the mobile app, if different than the root of the repository.                                                                               |
 
 ## Terminology
 
