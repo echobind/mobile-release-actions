@@ -51,11 +51,16 @@ const main = async (): Promise<void> => {
       });
     }
   } else {
-    await writePackageJsonVersion(getVersionFromTag(newTag), rootDirectory);
+    if (versionChangeType !== 'none') {
+      await writePackageJsonVersion(getVersionFromTag(newTag), rootDirectory);
 
-    await exec.exec('git', ['add', 'package.json']);
-    await exec.exec('git', ['commit', '-m', `chore(release): ${newTag}`]);
-    await exec.exec('git', ['push', '-f', 'origin', branchToTag]);
+      await exec.exec('git', [
+        'add',
+        rootDirectory ? `${rootDirectory}/package.json` : 'package.json',
+      ]);
+      await exec.exec('git', ['commit', '-m', `chore(release): ${newTag}`]);
+      await exec.exec('git', ['push', '-f', 'origin', branchToTag]);
+    }
   }
 
   core.setOutput('tag', newTag);
