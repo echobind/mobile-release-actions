@@ -1,0 +1,36 @@
+name: 'Doppler env'
+description: 'An action for automating react native versions'
+inputs:
+  github-tagging:
+    description: 'Manage tags through GitHub'
+    required: false
+    default: true
+  github-auth-token:
+    description: 'A personal access token for the user that will be tagging and publishing the releases'
+    required: true
+    default: ${{ github.token }}
+  create-tag:
+    description: 'Create a tag for the release in github'
+    required: true
+    default: true
+  branch:
+    description: 'The name of the branch the tag should be created off of'
+    required: true
+    default: 'main'
+  version-change-type:
+    description: 'Type of version change to make (major, minor, patch, none)'
+    required: true
+    default: 'none'
+  build-version:
+    description: 'Build version'
+    required: true
+    default: 1
+  root-directory:
+    description: 'The root directory of the app, if different than the root of the repo'
+    required: false
+outputs:
+  tag:
+    description: 'The tag that was created'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

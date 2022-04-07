@@ -1,0 +1,49 @@
+{
+  "cli": {
+    "version": ">= 0.48.2"
+  },
+  "build": {
+    "development": {
+      "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "buildConfiguration": "Debug"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "alpha": {
+      "DOPPLER_CONFIG": "alpha",
+      "DOPPLER_ENVIRONMENT": "alpha",
+      "DOPPLER_PROJECT": "react-native-release-demo",
+      "MY_ENV_VALUE": "alpha-test-value"
+    },
+    "beta": {},
+    "production": {}
+  },
+  "submit": {
+    "beta": {
+      "ios": {
+        "ascAppId": "1617156693",
+        "appleTeamId": "L29P89N9U3"
+      },
+      "android": {
+        "serviceAccountKeyPath": "/android/keystore.json",
+        "track": "beta"
+      }
+    },
+    "production": {
+      "ios": {
+        "ascAppId": "1617156693",
+        "appleTeamId": "L29P89N9U3"
+      },
+      "android": {
+        "serviceAccountKeyPath": "/android/keystore.json",
+        "track": "beta"
+      }
+    }
+  }
+}
