@@ -1,10 +1,9 @@
 import * as github from '@actions/github';
-import { DEFAULT_APP_VERSION } from '../constants';
 
 interface CreateGithubTagProps {
   githubAuthToken: string;
   branchToTag: string;
-  currentTag: string;
+  currentTag: string | null;
   newTag: string;
 }
 
@@ -16,17 +15,21 @@ export const createGithubTag = async ({
 }: CreateGithubTagProps): Promise<void> => {
   const octokit = github.getOctokit(githubAuthToken);
 
-  const commitsResponse = await octokit.rest.repos.compareCommitsWithBasehead({
-    ...github.context.repo,
-    basehead: `${currentTag}...${branchToTag}`,
-  });
-  const commits = commitsResponse?.data?.commits || [];
-  // generate list of commit messages for release body
-  const commitMessages = commits.map(
-    (item) => `* ${item.commit.message} ${item.html_url} - @${item.author?.login || 'unknown'}`
-  );
-  // generate body for release
-  const body = `Released from ${branchToTag}\n\n${commitMessages.join('\n ')}`;
+  let body = `Released from ${branchToTag}`;
+
+  if (currentTag) {
+    const commitsResponse = await octokit.rest.repos.compareCommitsWithBasehead({
+      ...github.context.repo,
+      basehead: `${currentTag}...${branchToTag}`,
+    });
+    const commits = commitsResponse?.data?.commits || [];
+    // generate list of commit messages for release body
+    const commitMessages = commits.map(
+      (item) => `* ${item.commit.message} ${item.html_url} - @${item.author?.login || 'unknown'}`
+    );
+    // generate body for release
+    body = `${body}\n\n${commitMessages.join('\n ')}`;
+  }
 
   await octokit.rest.repos.createRelease({
     ...github.context.repo,
@@ -36,7 +39,7 @@ export const createGithubTag = async ({
   });
 };
 
-export const getMostRecentGithubTag = async (githubAuthToken: string): Promise<string> => {
+export const getMostRecentGithubTag = async (githubAuthToken: string): Promise<string | null> => {
   const octokit = github.getOctokit(githubAuthToken);
   const tagsResponse = await octokit.rest.repos.listTags({
     ...github.context.repo,
@@ -44,7 +47,7 @@ export const getMostRecentGithubTag = async (githubAuthToken: string): Promise<s
   });
   const tags = tagsResponse?.data || [];
 
-  const mostRecentTag = tags[0]?.name || `v${DEFAULT_APP_VERSION}-1`;
+  const mostRecentTag = tags[0]?.name || null;
 
   return mostRecentTag;
 };

@@ -1,11 +1,11 @@
+import { DEFAULT_APP_VERSION } from '../constants';
 import { VersionChangeType } from '../types';
 import { getMostRecentGithubTag } from './github';
 
 // TAG - v1.0.0-1
 // VERSION - 1.0.0
 
-export const getCurrentVersion = (githubAuthToken: string): Promise<string> => {
-  // TODO pull from GitHub or app.json?
+export const getCurrentVersion = (githubAuthToken: string): Promise<string | null> => {
   return getMostRecentGithubTag(githubAuthToken);
 };
 
@@ -14,7 +14,11 @@ export const getCurrentVersion = (githubAuthToken: string): Promise<string> => {
  * @param {string} currentTag ex: v1.0.0-1
  * @returns {string} ex: 1.0.0
  */
-export const getVersionFromTag = (currentTag: string): string => {
+export const getVersionFromTag = (currentTag: string | null): string => {
+  if (!currentTag) {
+    return DEFAULT_APP_VERSION;
+  }
+
   const [tagVersion, _tagVersionNumber] = currentTag.split('-');
 
   return tagVersion.replace('v', '');

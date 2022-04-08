@@ -21,7 +21,7 @@ const main = async (): Promise<void> => {
   await exec.exec('git', ['config', 'user.email', 'github-actions@github.com']);
 
   let currentVersion = DEFAULT_APP_VERSION,
-    currentTag = '';
+    currentTag: string | null = '';
 
   if (githubTagging) {
     currentTag = await getMostRecentGithubTag(githubAuthToken);
