@@ -24,7 +24,7 @@ __You must [install EAS CLI](https://github.com/marketplace/actions/expo-github-
 
 ## Setting up EAS CI Token
 
-In order to authenticate with the EAS CLI through GitHub, you need to generate a service token and it under the secrets for the repo. 
+In order to authenticate with the EAS CLI through GitHub, you need to generate a service token and put it under the secrets for the repo. 
 
 Navigate to `organization settings` in Expo Dashboard
 
