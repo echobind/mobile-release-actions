@@ -9,8 +9,7 @@
     "ci:package": "yarn build && yarn package",
     "lint": "eslint **/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest",
-    "test-run": "yarn build && node ./lib/src/main.js"
+    "test": "jest"
   },
   "dependencies": {
     "@actions/core": "^1.5.0",
