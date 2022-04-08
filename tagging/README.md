@@ -40,7 +40,7 @@ flowchart TB
 ## Terminology
 
 * `tag`
-  * Corresponds to value used in GitHub, which comes app version and build version.
+  * Corresponds to value used in GitHub, which comes from the app version and build version.
   * Ex: `v1.0.0-1`
 * `version`
   * Corresponds to app version, not including build version.
