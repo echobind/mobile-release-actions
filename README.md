@@ -22,7 +22,7 @@ flowchart TB
 ## Full Workflow Examples
 
 * [Using GitHub tagging](./examples/release-github.yml)
-* [Using package.json versioning](./examples/release-package.yml)
+* [Using package.json versioning](./examples/release-manual.yml)
 
 ## Contributing
 
