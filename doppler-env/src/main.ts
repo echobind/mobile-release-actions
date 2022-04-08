@@ -3,8 +3,8 @@ import fs from 'fs/promises';
 import * as core from '@actions/core';
 
 const main = async (): Promise<void> => {
-  const profile = core.getInput('profile');
-  const tokenKey = `${profile}_DOPPLER_TOKEN`;
+  const releaseStage = core.getInput('releaseStage');
+  const tokenKey = `${releaseStage.toUpperCase()}_DOPPLER_TOKEN`;
   const token = process.env[tokenKey];
 
   if (!token) {
@@ -22,8 +22,8 @@ const main = async (): Promise<void> => {
     ...easConfig,
     build: {
       ...easConfig.build,
-      [profile]: {
-        ...easConfig.build[profile],
+      [releaseStage]: {
+        ...easConfig.build[releaseStage],
         ...secrets,
       },
     },
