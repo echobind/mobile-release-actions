@@ -1,5 +1,4 @@
 import { exec } from 'child_process';
-import fs from 'fs/promises';
 import * as core from '@actions/core';
 
 const main = async (): Promise<void> => {
