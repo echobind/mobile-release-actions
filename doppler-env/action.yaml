@@ -1,0 +1,10 @@
+name: 'Doppler env'
+description: 'An action for injecting Doppler environment variables into eas based on releaseStage'
+inputs:
+  releaseStage:
+    description: 'expo releaseStage to use for build'
+    required: true
+    default: 'production'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
