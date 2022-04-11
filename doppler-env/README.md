@@ -1,6 +1,6 @@
 # doppler-env
 
-An action for injecting Doppler environment variables into eas based on profile. This action will pull the doppler values for the token tied to the profile and write them to the `eas.json` file. 
+An action for writing Doppler environment variables into a .env file based on profile. This action will pull the doppler values for the token tied to the profile and write them to a `.env` file. 
 
 ## Usage
 ```yaml

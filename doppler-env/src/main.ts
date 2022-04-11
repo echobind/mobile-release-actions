@@ -11,28 +11,7 @@ const main = async (): Promise<void> => {
     throw new Error(`No token for ${tokenKey} in environment`);
   }
 
-  await exec(`doppler secrets download --no-file --format=json --token=${token} > temp.json`);
-
-  const secretsFile = await fs.readFile(`${process.env.GITHUB_WORKSPACE}/temp.json`, 'utf8');
-  const easJsonFile = await fs.readFile(`${process.env.GITHUB_WORKSPACE}/eas.json`, 'utf8');
-  const secrets = JSON.parse(secretsFile);
-  const easConfig = JSON.parse(easJsonFile);
-
-  const updatedEasJson = {
-    ...easConfig,
-    build: {
-      ...easConfig.build,
-      [releaseStage]: {
-        ...easConfig.build[releaseStage],
-        ...secrets,
-      },
-    },
-  };
-
-  await fs.writeFile(
-    `${process.env.GITHUB_WORKSPACE}/eas.json`,
-    JSON.stringify(updatedEasJson, null, 2)
-  );
+  await exec(`doppler secrets download --no-file --format=env --token=${token} > .env`);
 };
 
 main().catch((e) => core.setFailed(e instanceof Error ? e.message : JSON.stringify(e)));
