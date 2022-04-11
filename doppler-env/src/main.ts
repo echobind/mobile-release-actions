@@ -15,23 +15,24 @@ const main = async (): Promise<void> => {
     core.info('Token found');
   }
 
-  await exec(
+  exec(
     '(curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sudo sh',
     (err) => {
       if (err) {
         core.setFailed(err instanceof Error ? err.message : JSON.stringify(err));
       } else {
         core.info('Doppler CLI installed');
+
+        exec(`doppler secrets download --no-file --format=env --token=${token} > .env`, (err) => {
+          if (err) {
+            core.setFailed(err instanceof Error ? err.message : JSON.stringify(err));
+          } else {
+            core.info('Secrets downloaded');
+          }
+        });
       }
     }
   );
-  await exec(`doppler secrets download --no-file --format=env --token=${token} > .env`, (err) => {
-    if (err) {
-      core.setFailed(err instanceof Error ? err.message : JSON.stringify(err));
-    } else {
-      core.info('Secrets downloaded');
-    }
-  });
 };
 
 main().catch((e) => core.setFailed(e instanceof Error ? e.message : JSON.stringify(e)));
