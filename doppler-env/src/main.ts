@@ -16,7 +16,9 @@ const main = async (): Promise<void> => {
   }
 
   await exec(`doppler secrets download --no-file --format=env --token=${token} > .env`, (err) => {
-    core.setFailed(err instanceof Error ? err.message : JSON.stringify(err));
+    if (err) {
+      core.setFailed(err instanceof Error ? err.message : JSON.stringify(err));
+    }
   });
 
   core.info('Secrets downloaded');
