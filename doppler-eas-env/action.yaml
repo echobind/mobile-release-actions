@@ -1,4 +1,4 @@
-name: 'Doppler env'
+name: 'Doppler EAS env'
 description: 'An action for injecting Doppler environment variables into eas based on releaseStage'
 inputs:
   releaseStage:

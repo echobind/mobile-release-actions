@@ -1,10 +1,10 @@
-# doppler-env
+# doppler-eas-env
 
-An action for writing Doppler environment variables into a .env file based on profile. This action will pull the doppler values for the token tied to the profile and write them to a `.env` file. 
+An action for writing Doppler environment variables into your `eas.json` based on release stage. This action will pull the doppler values for the token tied to the release stage and write them to `eas.json` under the correct release stage.
 
 ## Usage
 ```yaml
-- uses: echobind/mobile-release-actions/doppler-env@v1
+- uses: echobind/mobile-release-actions/doppler-eas-env@v1
   env:
     ALPHA_DOPPLER_TOKEN: ${{ secrets.ALPHA_DOPPLER_TOKEN }}
     BETA_DOPPLER_TOKEN: ${{ secrets.BETA_DOPPLER_TOKEN }}
@@ -24,3 +24,9 @@ BAZ_DOPPLER_TOKEN
 ```
 
 The action will use the corresponding token based on the release stage passed.
+
+## Additional Links
+
+For more info on env variables in `eas.json`, see the [EAS docs](https://docs.expo.dev/build-reference/variables/).
+
+For more info on using environment variables in expo, see the [Expo docs](https://docs.expo.dev/guides/environment-variables/).
