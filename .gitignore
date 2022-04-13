@@ -96,6 +96,6 @@ Thumbs.db
 
 # Ignore built ts files
 lib/
-dist/
+
 
 .secrets
