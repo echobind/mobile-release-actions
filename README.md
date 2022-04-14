@@ -6,6 +6,8 @@ A monorepo of GitHub actions used for mobile releases.
   * Automate the versioning process for mobile applications.
 * [eas-build](./eas-build)
   * Assists in building and submitting your app using [EAS](https://docs.expo.dev/eas/)
+* [doppler-eas-env](./doppler-eas-env)
+  * Read secrets from Doppler and write to correct release stage in `eas.json`
 
 ## Release Process
 

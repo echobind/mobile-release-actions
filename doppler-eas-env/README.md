@@ -2,6 +2,8 @@
 
 An action for writing Doppler environment variables into your `eas.json` based on release stage. This action will pull the doppler values for the token tied to the release stage and write them to `eas.json` under the correct release stage.
 
+**Note: This action installs Doppler's CLI for you.**
+
 ## Usage
 ```yaml
 - uses: echobind/mobile-release-actions/doppler-eas-env@v1
