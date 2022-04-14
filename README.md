@@ -25,6 +25,7 @@ flowchart TB
 
 * [Using GitHub tagging](./examples/release-github.yml)
 * [Using package.json versioning](./examples/release-manual.yml)
+* [Pulling environment variables from Doppler](./examples/release-doppler.yml)
 
 ## Contributing
 
